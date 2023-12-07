@@ -83,8 +83,8 @@ type SerializedState = {
     state: TaskState;
     time: number;
     children?: SerializedState;
-  }
-}
+  };
+};
 
 export class TaskGroup {
   id: TaskGroupId;
@@ -142,7 +142,36 @@ export class FlowControl extends EventEmitter {
   };
 
   getSerializedState = (): SerializedState => {
-    const state: SerializedState = {}
+    const serializeTaskGroup = (taskGroup: TaskGroup): SerializedState => {
+      let groupState: SerializedState = {};
+      taskGroup.children.forEach((child, id) => {
+        if (child instanceof Task) {
+          groupState[id] = {
+            type: "task",
+            state: child.state || "not_started",
+            time: child.time || 0,
+          };
+        } else {
+          groupState[id] = {
+            type: "task-group",
+            state: "not_started", // Assuming task groups don't have a state
+            time: 0, // Assuming task groups don't have a time
+            children: serializeTaskGroup(child),
+          };
+        }
+      });
+      return groupState;
+    };
 
+    let state: SerializedState = {};
+    this.taskGroups.forEach((taskGroup, id) => {
+      state[id] = {
+        type: "task-group",
+        state: "not_started", // Assuming task groups don't have a state
+        time: 0, // Assuming task groups don't have a time
+        children: serializeTaskGroup(taskGroup),
+      };
+    });
     return state;
+  };
 }
