@@ -109,6 +109,8 @@ Use this space to show useful examples of how a project can be used. Additional 
 
 _For a full usage example please checkout the example listed in the [examples directory](https://github.com/thedjpetersen/flow-like-water/tree/main/examples)_
 
+_You can run the example code by running `npm run example` from the root directory_
+
 ```typescript
 // Import the necessary classes from the library
 import { Task, TaskGroup, FlowControl } from "./your-library-path";
