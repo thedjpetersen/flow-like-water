@@ -15,7 +15,7 @@
     <img src="images/FlowControl.png" alt="Logo" width="250" height="250">
   </a>
 
-<h3 align="center">FlowControl</h3>
+<h3 align="center">Go With the Flow 🤙</h3>
 
   <p align="center">
     Go with the flow and move easily through states.
