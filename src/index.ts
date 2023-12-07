@@ -77,6 +77,15 @@ export class Task {
   };
 }
 
+type SerializedState = {
+  [entityId: TaskId | TaskGroupId]: {
+    type: "task" | "task-group";
+    state: TaskState;
+    time: number;
+    children?: SerializedState;
+  }
+}
+
 export class TaskGroup {
   id: TaskGroupId;
   children: Map<TaskId | TaskGroupId, Task | TaskGroup>;
@@ -131,4 +140,9 @@ export class FlowControl extends EventEmitter {
       await this.runTaskGroup(taskGroup);
     }
   };
+
+  getSerializedState = (): SerializedState => {
+    const state: SerializedState = {}
+
+    return state;
 }
