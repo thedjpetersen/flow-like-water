@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es6", // Specify ECMAScript target version
+    "module": "commonjs", // Set module code generation to CommonJS
+    "lib": ["es6", "dom"], // Specify a list of library files to be included in the compilation
+    "declaration": true, // Generates corresponding '.d.ts' file for TypeScript typings
+    "outDir": "./lib", // Redirect output structure to the directory
+    "rootDir": "./src", // Specify the root directory of input files
+    "strict": true, // Enable all strict type-checking options
+    "esModuleInterop": true, // Enables emit interoperability between CommonJS and ES Modules
+    "skipLibCheck": true, // Skip type checking of declaration files
+    "forceConsistentCasingInFileNames": true // Disallow inconsistently-cased references to the same file
+  },
+  "include": [
+    "src/**/*" // Include all files in the src directory
+  ],
+  "exclude": [
+    "node_modules", // Exclude the node_modules directory
+    "**/*.test.ts" // Exclude test files
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "go-with-the-flow",
+  "version": "1.0.0",
+  "description": "A flow control library for handling series of asynchronous operations in JavaScript",
+  "main": "lib/index.js",
+  "module": "lib/index.esm.js",
+  "browser": "lib/index.browser.js",
+  "types": "lib/index.d.ts",
+  "files": [
+    "lib/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jest": "^29.5.11",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  }
+}
