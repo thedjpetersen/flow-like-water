@@ -1,3 +1,4 @@
 # Basic modules which we expect to be ignored
 coverage/
 node_modules/
+lib/

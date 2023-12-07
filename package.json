@@ -1,5 +1,5 @@
 {
-  "name": "go-with-the-flow",
+  "name": "flow-like-water",
   "version": "1.0.0",
   "description": "A flow control library for handling series of asynchronous operations in JavaScript",
   "main": "lib/index.js",

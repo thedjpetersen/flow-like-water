@@ -2,32 +2,26 @@
 
 <!-- PROJECT SHIELDS -->
 
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/thedjpetersen/go-with-the-flow">
+  <a href="https://github.com/thedjpetersen/flow-like-water">
     <img src="images/FlowControl.png" alt="Logo" width="250" height="250">
   </a>
 
-<h3 align="center">Go With the Flow 🤙</h3>
+<h3 align="center">Flow like water 🤙</h3>
 
   <p align="center">
-    Go with the flow and move easily through states.
+    Flow like water and move easily through states.
     <br />
-    <a href="https://github.com/thedjpetersen/go-with-the-flow"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/thedjpetersen/flow-like-water"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/thedjpetersen/go-with-the-flow">View Demo</a>
+    <a href="https://github.com/thedjpetersen/flow-like-water">View Demo</a>
     ·
-    <a href="https://github.com/thedjpetersen/go-with-the-flow/issues">Report Bug</a>
+    <a href="https://github.com/thedjpetersen/flow-like-water/issues">Report Bug</a>
     ·
-    <a href="https://github.com/thedjpetersen/go-with-the-flow/issues">Request Feature</a>
+    <a href="https://github.com/thedjpetersen/flow-like-water/issues">Request Feature</a>
   </p>
 </div>
 
@@ -72,7 +66,7 @@ our states and transitions.
 ### Installation
 
 ```sh
-npm install go-with-the-flow
+npm install flow-like-water
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -113,7 +107,7 @@ npm install go-with-the-flow
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-_For a full usage example please checkout the example listed in the [examples directory](https://github.com/thedjpetersen/go-with-the-flow/tree/main/examples)_
+_For a full usage example please checkout the example listed in the [examples directory](https://github.com/thedjpetersen/flow-like-water/tree/main/examples)_
 
 ```typescript
 // Import the necessary classes from the library
@@ -231,9 +225,9 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 ## Contact
 
-DJ Petersen - [@twitter_handle](https://twitter.com/thedjpetersen)
+DJ Petersen - [@thedjpetersen](https://twitter.com/thedjpetersen)
 
-Project Link: [https://github.com/thedjpetersen/go-with-the-flow](https://github.com/thedjpetersen/go-with-the-flow)
+Project Link: [https://github.com/thedjpetersen/flow-like-water](https://github.com/thedjpetersen/flow-like-water)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
