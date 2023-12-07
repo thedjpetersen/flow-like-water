@@ -1,17 +1,10 @@
 import EventEmitter from "./event-emitter";
+import { wait } from "./util";
 
 export type TaskState = "not_started" | "completed" | "in_process" | "failed";
 
 type TaskId = string;
 type TaskGroupId = string;
-
-const wait = (time: number) => {
-  return new Promise<void>((resolve) => {
-    setTimeout(() => {
-      resolve();
-    }, time);
-  });
-};
 
 export class Task {
   id: TaskId;
@@ -23,30 +16,36 @@ export class Task {
   state?: TaskState;
   time?: number;
 
-  constructor(
-    id: TaskId,
-    execute: () => Promise<void | TaskId | TaskGroupId>,
-    checkCondition: () => Promise<boolean>,
-    nextTasks?: TaskId[],
-    retries: number = 0,
-    waitTime: number = 0
-  ) {
-    this.id = id;
-    this.execute = execute;
-    this.checkCondition = checkCondition;
-    this.retries = retries;
-    this.waitTime = waitTime;
-    this.nextTasks = nextTasks;
+  constructor(options: {
+    id: TaskId;
+    execute: () => Promise<void | TaskId | TaskGroupId>;
+    checkCondition: () => Promise<boolean>;
+    nextTasks?: TaskId[];
+    retries?: number;
+    waitTime?: number;
+  }) {
+    this.id = options.id;
+    this.execute = options.execute;
+    this.checkCondition = options.checkCondition;
+    this.retries = options.retries || 0;
+    this.waitTime = options.waitTime || 1000;
+    this.nextTasks = options.nextTasks;
     this.state = "not_started";
     this.time = 0;
   }
 
-  private runTask = async (): Promise<string | void> => {
+  // Public only because of testing
+  public runTask = async (): Promise<string | void> => {
     try {
       this.state = "in_process";
 
       const startTime = Date.now();
       const result = await this.execute();
+
+      if (this.checkCondition && !(await this.checkCondition())) {
+        throw new Error("Condition not met");
+      }
+
       const endTime = Date.now();
 
       this.time = endTime - startTime;
@@ -60,19 +59,23 @@ export class Task {
 
   public run = async (): Promise<string | void> => {
     let currentRetries = 0;
-    try {
-      const result = await this.runTask();
-      return result;
-    } catch (error) {
-      if (currentRetries < this.retries) {
-        currentRetries++;
+    let hasRun = false;
+    while (currentRetries < this.retries || !hasRun) {
+      try {
+        const result = await this.runTask();
+        return result;
+      } catch (error) {
         if (this.waitTime > 0) {
           await wait(this.waitTime);
         }
-        return this.run();
-      } else {
-        throw error;
+
+        if (currentRetries >= this.retries) {
+          throw error;
+        }
       }
+
+      hasRun = true;
+      currentRetries++;
     }
   };
 }
@@ -119,6 +122,14 @@ export class FlowControl extends EventEmitter {
 
   removeGroup(taskGroupId: TaskGroupId) {
     this.taskGroups.delete(taskGroupId);
+  }
+
+  getTaskGroups() {
+    return this.taskGroups;
+  }
+
+  getTaskGroup(taskGroupId: TaskGroupId) {
+    return this.taskGroups.get(taskGroupId);
   }
 
   private runTaskGroup = async (taskGroup: TaskGroup) => {
