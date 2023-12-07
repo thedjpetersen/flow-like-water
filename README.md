@@ -12,7 +12,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/thedjpetersen/go-with-the-flow">
-    <img src="images/FlowControl.png" alt="Logo" width="80" height="80">
+    <img src="images/FlowControl.png" alt="Logo" width="250" height="250">
   </a>
 
 <h3 align="center">FlowControl</h3>
