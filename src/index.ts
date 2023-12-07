@@ -1,7 +1,7 @@
 import EventEmitter from "./event-emitter";
 import { wait } from "./util";
 
-export type TaskState = "not_started" | "completed" | "in_process" | "failed";
+export type TaskState = "not_started" | "completed" | "in_progress" | "failed";
 
 type TaskId = string;
 type TaskGroupId = string;
@@ -98,7 +98,7 @@ export class Task {
    */
   public runTask = async (): Promise<string | void> => {
     try {
-      this.state = "in_process";
+      this.state = "in_progress";
 
       const startTime = Date.now();
       const result = await this.execute();
@@ -163,13 +163,15 @@ export class Task {
   };
 }
 
+type SerializedData = {
+  type: "task" | "task-group";
+  state: TaskState;
+  time: number;
+  children?: SerializedState;
+};
+
 type SerializedState = {
-  [entityId: TaskId | TaskGroupId]: {
-    type: "task" | "task-group";
-    state: TaskState;
-    time: number;
-    children?: SerializedState;
-  };
+  [entityId: string]: SerializedData;
 };
 
 /**
@@ -286,7 +288,9 @@ export class FlowControl extends EventEmitter {
     const tasks = Array.from(taskGroup.children.values());
     for (const task of tasks) {
       if (task instanceof Task) {
+        this.emit("taskStarted", task);
         await task.run();
+        this.emit("taskComplete", task);
       } else {
         await this.runTaskGroup(task);
       }
@@ -311,35 +315,64 @@ export class FlowControl extends EventEmitter {
    * @returns {SerializedState} The serialized state of all task groups.
    */
   getSerializedState = (): SerializedState => {
-    const serializeTaskGroup = (taskGroup: TaskGroup): SerializedState => {
+    const serializeTaskGroup = (taskGroup: TaskGroup): SerializedData => {
       let groupState: SerializedState = {};
+      let totalTime = 0;
+      let hasInProgress = false;
+      let allCompleted = true;
+
       taskGroup.children.forEach((child, id) => {
+        let childTime = (child as Task).time || 0;
+        totalTime += childTime;
+
         if (child instanceof Task) {
           groupState[id] = {
             type: "task",
             state: child.state || "not_started",
-            time: child.time || 0,
+            time: childTime,
           };
+
+          if (child.state === "in_progress") {
+            hasInProgress = true;
+          }
+          if (child.state !== "completed") {
+            allCompleted = false;
+          }
         } else {
+          const childGroupData = serializeTaskGroup(child);
           groupState[id] = {
+            ...childGroupData,
             type: "task-group",
-            state: "not_started", // Assuming task groups don't have a state
-            time: 0, // Assuming task groups don't have a time
-            children: serializeTaskGroup(child),
           };
+
+          if (childGroupData.state === "in_progress") {
+            hasInProgress = true;
+          }
+          if (childGroupData.state !== "completed") {
+            allCompleted = false;
+          }
         }
       });
-      return groupState;
+
+      let groupStatus = "not_started";
+      if (hasInProgress) {
+        groupStatus = "in_progress";
+      } else if (allCompleted) {
+        groupStatus = "completed";
+      }
+
+      return {
+        type: "task-group",
+        state: groupStatus as any,
+        time: totalTime,
+        children: groupState,
+      };
     };
 
     let state: SerializedState = {};
     this.taskGroups.forEach((taskGroup, id) => {
-      state[id] = {
-        type: "task-group",
-        state: "not_started", // Assuming task groups don't have a state
-        time: 0, // Assuming task groups don't have a time
-        children: serializeTaskGroup(taskGroup),
-      };
+      const groupData = serializeTaskGroup(taskGroup);
+      state[id] = groupData;
     });
     return state;
   };
