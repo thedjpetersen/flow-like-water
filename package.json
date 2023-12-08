@@ -1,6 +1,6 @@
 {
   "name": "flow-like-water",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A flow control library for handling series of asynchronous operations in JavaScript",
   "main": "lib/index.js",
   "module": "lib/index.esm.js",
