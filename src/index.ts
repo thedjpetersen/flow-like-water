@@ -1,7 +1,12 @@
 import EventEmitter from "./event-emitter";
 import { wait } from "./util";
 
-export type TaskState = "not_started" | "completed" | "in_progress" | "failed";
+export type TaskState =
+  | "not_started"
+  | "completed"
+  | "in_progress"
+  | "failed"
+  | "skipped";
 
 type TaskId = string;
 type TaskGroupId = string;
@@ -230,6 +235,7 @@ export class TaskGroup {
 export class FlowControl extends EventEmitter {
   // Map to quickly access tasks by id
   private taskGroups: Map<TaskGroupId, TaskGroup>;
+  private nextTaskId?: TaskId;
 
   constructor() {
     super();
@@ -288,8 +294,18 @@ export class FlowControl extends EventEmitter {
     const tasks = Array.from(taskGroup.children.values());
     for (const task of tasks) {
       if (task instanceof Task) {
+        if (this.nextTaskId && task.id !== this.nextTaskId) {
+          task.state = "skipped";
+          continue;
+        }
+
         this.emit("taskStarted", task);
-        await task.run();
+        const nextTaskId = await task.run();
+        if (nextTaskId) {
+          this.nextTaskId = nextTaskId;
+        } else if (this.nextTaskId) {
+          delete this.nextTaskId;
+        }
         this.emit("taskComplete", task);
       } else {
         await this.runTaskGroup(task);
