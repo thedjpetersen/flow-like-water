@@ -17,8 +17,6 @@
     <a href="https://github.com/thedjpetersen/flow-like-water"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/thedjpetersen/flow-like-water">View Demo</a>
-    ·
     <a href="https://github.com/thedjpetersen/flow-like-water/issues">Report Bug</a>
     ·
     <a href="https://github.com/thedjpetersen/flow-like-water/issues">Request Feature</a>
