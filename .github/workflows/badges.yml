@@ -21,14 +21,52 @@ jobs:
         id: generate-badge-data
         run: npm run generate-badge-data
 
+      - name: Read output data
+        id: read-output
+        run: |
+          echo "COVERAGE_LABEL=$(cat $GITHUB_OUTPUT | grep coverage-label | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "COVERAGE_MESSAGE=$(cat $GITHUB_OUTPUT | grep coverage-message | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "COVERAGE_COLOR=$(cat $GITHUB_OUTPUT | grep coverage-color | cut -d '=' -f2)" >> $GITHUB_ENV
+
+      - name: Check NPM dependencies
+        run: |
+          if npm outdated; then
+            echo "dependencies-status=outdated" >> $GITHUB_OUTPUT
+          else
+            echo "dependencies-status=up-to-date" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Get current release version
+        run: echo "release-version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+
       - name: Create Coverage Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ${{ secrets.GIST_ID }}
           filename: coverage-badge.svg
-          label: ${{ steps.generate-badge-data.outputs.coverage-label }}
-          message: ${{ steps.generate-badge-data.outputs.coverage-message }}
-          color: ${{ steps.generate-badge-data.outputs.coverage-color }}
+          label: ${{ env.COVERAGE_LABEL }}
+          message: ${{ env.COVERAGE_MESSAGE }}
+          color: ${{ env.COVERAGE_COLOR }}
+
+      - name: Create Dependencies Status Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ secrets.GIST_ID }}
+          filename: dependencies-status-badge.svg
+          label: Dependencies
+          message: ${{ env.DEPENDENCIES_STATUS }}
+          color: ${{ env.DEPENDENCIES_STATUS == 'up-to-date' && 'green' || 'red' }}
+
+      - name: Create Release Version Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ secrets.GIST_ID }}
+          filename: release-version-badge.svg
+          label: Release
+          message: ${{ env.RELEASE_VERSION }}
+          color: blue
 
       # Add steps to publish the package and badge if necessary
