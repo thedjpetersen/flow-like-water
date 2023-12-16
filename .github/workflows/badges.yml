@@ -20,8 +20,7 @@ jobs:
       - name: Generate badge data
         id: generate-badge-data
         run: |
-          set -e
-          npm run generate-badge-data > $GITHUB_OUTPUT || echo "Failed to generate badge data"
+          npm run generate-badge-data | grep -E '^[a-zA-Z-]+=' > $GITHUB_OUTPUT
 
       - name: Update Coverage
         id: read-output
