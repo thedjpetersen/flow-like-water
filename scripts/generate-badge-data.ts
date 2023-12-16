@@ -1,6 +1,7 @@
 import fs from "fs";
-import process from "process";
 import { execSync } from "child_process";
+
+let output = "";
 
 const coverageReport = "./coverage/coverage-summary.json"; // Adjust the path as needed
 const packageJson = "./package.json"; // Adjust the path as needed
@@ -15,14 +16,8 @@ function determineColor(coverage) {
   }
 }
 
-function writeToOutputFile(outputName, outputValue) {
-  const outputFile = process.env.GITHUB_OUTPUT;
-  if (outputFile) {
-    fs.appendFileSync(outputFile, `${outputName}=${outputValue}\n`);
-  } else {
-    console.error("GITHUB_OUTPUT environment variable not found.");
-    process.exit(1);
-  }
+function writeToOutput(outputName, outputValue) {
+  output += `${outputName}=${outputValue}\n`;
 }
 
 function checkNpmDependencies() {
@@ -49,9 +44,9 @@ if (fs.existsSync(coverageReport)) {
   const linesCoverage = coverage.total.lines.pct;
   const color = determineColor(linesCoverage);
 
-  writeToOutputFile("coverage-label", "Coverage");
-  writeToOutputFile("coverage-message", `${linesCoverage}%`);
-  writeToOutputFile("coverage-color", color);
+  writeToOutput("coverage-label", "Coverage");
+  writeToOutput("coverage-message", `${linesCoverage}%`);
+  writeToOutput("coverage-color", color);
 } else {
   console.error("Coverage report not found.");
   process.exit(1);
@@ -59,11 +54,10 @@ if (fs.existsSync(coverageReport)) {
 
 // Check NPM dependencies
 const dependenciesStatus = checkNpmDependencies();
-writeToOutputFile("dependencies-status", dependenciesStatus);
+writeToOutput("dependencies-status", dependenciesStatus);
 
 // Get current release version
 const releaseVersion = getCurrentReleaseVersion();
-writeToOutputFile("release-version", releaseVersion);
+writeToOutput("release-version", releaseVersion);
 
-console.log("GITHUB OUTPUT:");
-console.log(fs.readFileSync(process.env.GITHUB_OUTPUT || "", "utf8"));
+console.log(output);

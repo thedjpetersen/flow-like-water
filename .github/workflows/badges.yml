@@ -19,7 +19,7 @@ jobs:
 
       - name: Generate badge data
         id: generate-badge-data
-        run: npm run generate-badge-data
+        run: npm run generate-badge-data > $GITHUB_OUTPUT
 
       - name: Update Coverage
         id: read-output
