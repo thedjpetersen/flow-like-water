@@ -54,7 +54,7 @@ if (fs.existsSync(coverageReport)) {
 
 // Check NPM dependencies
 const dependenciesStatus = checkNpmDependencies();
-writeToOutput("DEPEDENCIES_STATUS", dependenciesStatus);
+writeToOutput("DEPENDENCIES_STATUS", dependenciesStatus);
 
 // Get current release version
 const releaseVersion = getCurrentReleaseVersion();
