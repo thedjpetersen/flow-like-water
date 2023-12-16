@@ -64,3 +64,6 @@ writeToOutputFile("dependencies-status", dependenciesStatus);
 // Get current release version
 const releaseVersion = getCurrentReleaseVersion();
 writeToOutputFile("release-version", releaseVersion);
+
+console.log("GITHUB OUTPUT:");
+console.log(fs.readFileSync(process.env.GITHUB_OUTPUT || "", "utf8"));
