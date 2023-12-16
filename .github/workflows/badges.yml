@@ -31,13 +31,13 @@ jobs:
       - name: Check NPM dependencies
         run: |
           if npm outdated; then
-            echo "dependencies-status=outdated" >> $GITHUB_OUTPUT
+            echo "DEPENDENCIES_STATUS=outdated" >> $GITHUB_ENV
           else
-            echo "dependencies-status=up-to-date" >> $GITHUB_OUTPUT
+            echo "DEPENDENCIES_STATUS=up-to-date" >> $GITHUB_ENV
           fi
 
       - name: Get current release version
-        run: echo "release-version=$(node -p -e "require('./package.json').version")" >> $GITHUB_OUTPUT
+        run: echo "RELEASE_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
 
       - name: Create Coverage Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
