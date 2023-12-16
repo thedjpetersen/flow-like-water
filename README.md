@@ -2,12 +2,16 @@
 
 <!-- PROJECT SHIELDS -->
 
+![Coverage Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/coverage-badge.svg)
+
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
   <a href="https://github.com/thedjpetersen/flow-like-water">
     <img src="images/FlowControl.png" alt="Logo" width="250" height="250">
   </a>
+
+# My Project
 
 <h3 align="center">Flow like water 🤙</h3>
 

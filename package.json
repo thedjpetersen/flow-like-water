@@ -13,7 +13,8 @@
     "build": "tsc",
     "example": "node -r tsm example/example.ts",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "generate-badge-data": "node -r tsm scripts/generate-badge-data.ts"
   },
   "keywords": [],
   "author": "",

@@ -11,26 +11,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Run npm install here if necessary
       - name: Install dependencies
         run: npm install
 
       - name: Run Jest with coverage
         run: npm run coverage
-        # Ensure your package.json has a script "coverage": "jest --coverage"
 
-      # Additional steps to process the coverage report and extract the desired data
+      - name: Generate badge data
+        id: generate-badge-data
+        run: npm run generate-badge-data
 
       - name: Create Coverage Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
         with:
           auth: ${{ secrets.GIST_SECRET }}
           gistID: ${{ secrets.GIST_ID }}
-          filename: coverage-badge.svg # Change to your preferred filename
-          label: Coverage
-          # Use a script or a command to extract the coverage percentage from the Jest coverage report
-          message: ${{ steps.coverage-output.outputs.coverage }} # Assuming you have a step to set this output
-          color: green # You can choose the color based on coverage percentage
-
+          filename: coverage-badge.svg
+          label: ${{ steps.generate-badge-data.outputs.coverage-label }}
+          message: ${{ steps.generate-badge-data.outputs.coverage-message }}
+          color: ${{ steps.generate-badge-data.outputs.coverage-color }}
 
       # Add steps to publish the package and badge if necessary
