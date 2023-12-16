@@ -17,17 +17,13 @@ jobs:
       - name: Run Jest with coverage
         run: npm run coverage
 
-      - name: Generate badge data
-        id: generate-badge-data
+      - name: Generate and Update Coverage Data
+        id: generate-and-update-coverage
         run: |
-          npm run generate-badge-data | grep -E '^[a-zA-Z-]+=' > $GITHUB_OUTPUT
-
-      - name: Update Coverage
-        id: read-output
-        run: |
-          echo "COVERAGE_LABEL=$(cat $GITHUB_OUTPUT | grep coverage-label | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "COVERAGE_MESSAGE=$(cat $GITHUB_OUTPUT | grep coverage-message | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "COVERAGE_COLOR=$(cat $GITHUB_OUTPUT | grep coverage-color | cut -d '=' -f2)" >> $GITHUB_ENV
+          OUTPUT=$(npm run generate-badge-data)
+          echo "COVERAGE_LABEL=$(echo "$OUTPUT" | grep 'coverage-label' | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "COVERAGE_MESSAGE=$(echo "$OUTPUT" | grep 'coverage-message' | cut -d '=' -f2)" >> $GITHUB_ENV
+          echo "COVERAGE_COLOR=$(echo "$OUTPUT" | grep 'coverage-color' | cut -d '=' -f2)" >> $GITHUB_ENV
 
       - name: Check NPM dependencies
         run: |
