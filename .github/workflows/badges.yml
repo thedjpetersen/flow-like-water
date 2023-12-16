@@ -19,7 +19,9 @@ jobs:
 
       - name: Generate badge data
         id: generate-badge-data
-        run: npm run generate-badge-data > $GITHUB_OUTPUT
+        run: |
+          set -e
+          npm run generate-badge-data > $GITHUB_OUTPUT || echo "Failed to generate badge data"
 
       - name: Update Coverage
         id: read-output
