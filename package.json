@@ -11,8 +11,9 @@
   ],
   "scripts": {
     "build": "tsc",
+    "example": "node -r tsm example/example.ts",
     "test": "jest",
-    "example": "node -r tsm example/example.ts"
+    "coverage": "jest --coverage"
   },
   "keywords": [],
   "author": "",

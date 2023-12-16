@@ -1,0 +1,36 @@
+name: Package badges
+
+on:
+  push:
+    branches: main
+
+jobs:
+  test-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Run npm install here if necessary
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Jest with coverage
+        run: npm run coverage
+        # Ensure your package.json has a script "coverage": "jest --coverage"
+
+      # Additional steps to process the coverage report and extract the desired data
+
+      - name: Create Coverage Badge
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ secrets.GIST_SECRET }}
+          gistID: ${{ secrets.GIST_ID }}
+          filename: coverage-badge.svg # Change to your preferred filename
+          label: Coverage
+          # Use a script or a command to extract the coverage percentage from the Jest coverage report
+          message: ${{ steps.coverage-output.outputs.coverage }} # Assuming you have a step to set this output
+          color: green # You can choose the color based on coverage percentage
+
+
+      # Add steps to publish the package and badge if necessary
