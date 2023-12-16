@@ -44,9 +44,9 @@ if (fs.existsSync(coverageReport)) {
   const linesCoverage = coverage.total.lines.pct;
   const color = determineColor(linesCoverage);
 
-  writeToOutput("coverage-label", "Coverage");
-  writeToOutput("coverage-message", `${linesCoverage}%`);
-  writeToOutput("coverage-color", color);
+  writeToOutput("COVERAGE_LABEL", "Coverage");
+  writeToOutput("COVERAGE_MESSAGE", `${linesCoverage}%`);
+  writeToOutput("COVERAGE_COLOR", color);
 } else {
   console.error("Coverage report not found.");
   process.exit(1);
@@ -54,10 +54,10 @@ if (fs.existsSync(coverageReport)) {
 
 // Check NPM dependencies
 const dependenciesStatus = checkNpmDependencies();
-writeToOutput("dependencies-status", dependenciesStatus);
+writeToOutput("DEPEDENCIES_STATUS", dependenciesStatus);
 
 // Get current release version
 const releaseVersion = getCurrentReleaseVersion();
-writeToOutput("release-version", releaseVersion);
+writeToOutput("RELEASE_VERSION", releaseVersion);
 
 console.log(output);

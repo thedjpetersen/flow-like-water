@@ -17,24 +17,15 @@ jobs:
       - name: Run Jest with coverage
         run: npm run coverage
 
-      - name: Generate and Update Coverage Data
-        id: generate-and-update-coverage
+      - name: Generate and Set Environment Variables
+        id: generate-and-set-env-vars
         run: |
           OUTPUT=$(npm run generate-badge-data)
-          echo "COVERAGE_LABEL=$(echo "$OUTPUT" | grep 'coverage-label' | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "COVERAGE_MESSAGE=$(echo "$OUTPUT" | grep 'coverage-message' | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "COVERAGE_COLOR=$(echo "$OUTPUT" | grep 'coverage-color' | cut -d '=' -f2)" >> $GITHUB_ENV
-
-      - name: Check NPM dependencies
-        run: |
-          if npm outdated; then
-            echo "DEPENDENCIES_STATUS=outdated" >> $GITHUB_ENV
-          else
-            echo "DEPENDENCIES_STATUS=up-to-date" >> $GITHUB_ENV
-          fi
-
-      - name: Get current release version
-        run: echo "RELEASE_VERSION=$(node -p -e "require('./package.json').version")" >> $GITHUB_ENV
+          while IFS='=' read -r key value; do
+            if [[ $key =~ ^[a-zA-Z_-]+$ ]]; then
+              echo "$key=$value" >> $GITHUB_ENV
+            fi
+          done <<< "$OUTPUT"
 
       - name: Create Coverage Badge
         uses: schneegans/dynamic-badges-action@v1.7.0
