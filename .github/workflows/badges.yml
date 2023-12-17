@@ -17,44 +17,10 @@ jobs:
       - name: Run Jest with coverage
         run: npm run coverage
 
-      - name: Generate and Set Environment Variables
-        id: generate-and-set-env-vars
-        run: |
-          OUTPUT=$(npm run generate-badge-data)
-          while IFS='=' read -r key value; do
-            if [[ $key =~ ^[a-zA-Z_-]+$ ]]; then
-              echo "$key=$value" >> $GITHUB_ENV
-            fi
-          done <<< "$OUTPUT"
-
-      - name: Create Coverage Badge
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: coverage-badge.svg
-          label: ${{ env.COVERAGE_LABEL }}
-          message: ${{ env.COVERAGE_MESSAGE }}
-          color: ${{ env.COVERAGE_COLOR }}
-
-      - name: Create Dependencies Status Badge
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: dependencies-status-badge.svg
-          label: Dependencies
-          message: ${{ env.DEPENDENCIES_STATUS }}
-          color: ${{ env.DEPENDENCIES_STATUS == 'up-to-date' && 'green' || 'red' }}
-
-      - name: Create Release Version Badge
-        uses: schneegans/dynamic-badges-action@v1.7.0
-        with:
-          auth: ${{ secrets.GIST_SECRET }}
-          gistID: ${{ secrets.GIST_ID }}
-          filename: release-version-badge.svg
-          label: Release
-          message: ${{ env.RELEASE_VERSION }}
-          color: blue
+      - name: Generate our badge data
+        run: npm run generate-badges
+        env:
+          GITHUB_TOKEN: ${{ secrets.GIST_SECRET }}
+          GIST_ID: ${{ secrets.GIST_ID }}
 
       # Add steps to publish the package and badge if necessary
