@@ -18,7 +18,7 @@ jobs:
         run: npm run coverage
 
       - name: Generate our badge data
-        run: npm run generate-badges
+        run: npm run generate-badge-data
         env:
           GITHUB_TOKEN: ${{ secrets.GIST_SECRET }}
           GIST_ID: ${{ secrets.GIST_ID }}
