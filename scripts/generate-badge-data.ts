@@ -69,7 +69,7 @@ if (fs.existsSync(coverageReport)) {
 // Check NPM dependencies
 const dependenciesStatus = checkNpmDependencies();
 addBadge({
-  filename: "depedencies.svg",
+  filename: "dependencies.svg",
   label: "Dependencies",
   message: dependenciesStatus,
   color: dependenciesStatus === "up-to-date" ? "green" : "red",
@@ -85,6 +85,7 @@ addBadge({
 }); // Color can be adjusted
 
 (async () => {
+  console.log(badges);
   for (const badge of badges) {
     await createBadge({
       ...badge,

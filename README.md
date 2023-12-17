@@ -2,9 +2,8 @@
 
 <!-- PROJECT SHIELDS -->
 
-![Coverage Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/coverage-badge.svg)
-![Dependencies Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/dependencies-status-badge.svg)
-![Release Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/release-version-badge.svg)
+<!-- BADGES_START -->
+<!-- BADGES_END -->
 
 <!-- PROJECT LOGO -->
 <br />

@@ -14,7 +14,8 @@
     "example": "node -r tsm example/example.ts",
     "test": "jest",
     "coverage": "jest --coverage --coverageReporters=\"json-summary\"",
-    "generate-badge-data": "node -r tsm scripts/generate-badge-data.ts"
+    "generate-badge-data": "node -r tsm scripts/generate-badge-data.ts",
+    "update-readme": "node -r tsm scripts/update-readme.ts"
   },
   "keywords": [],
   "author": "",

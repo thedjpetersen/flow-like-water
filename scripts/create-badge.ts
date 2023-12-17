@@ -1,4 +1,6 @@
-import { Buffer } from "buffer";
+function processString(str) {
+  return str.replace(/-/g, "--").replace(/_/g, "__");
+}
 
 type BadgeOptions = {
   gistID: string;
@@ -49,12 +51,16 @@ export async function createBadge({
   color,
   githubToken,
 }: BadgeOptions) {
+  const labelProcessed = processString(label);
+  const messageProcessed = processString(message);
+
   const badgeURL = `https://img.shields.io/badge/${encodeURIComponent(
-    label
-  )}-${encodeURIComponent(message)}-${color}`;
+    labelProcessed
+  )}-${encodeURIComponent(messageProcessed)}-${color}`;
 
   try {
     // Fetch the badge image
+    console.log(badgeURL);
     const badgeResponse = await fetch(badgeURL);
     const badgeContent = await badgeResponse.text();
 
