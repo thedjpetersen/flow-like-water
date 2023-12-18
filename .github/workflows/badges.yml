@@ -22,19 +22,3 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GIST_SECRET }}
           GIST_ID: ${{ secrets.GIST_ID }}
-
-      # Add steps to publish the package and badge if necessary
-      - name: Run script to update README
-        id: update_readme
-        run: npm run update-readme
-        env:
-          GIST_ID: ${{ secrets.GIST_ID }}
-
-      - name: Commit and Push if README Updated
-        if: steps.update_readme.outputs.updated == 'true'
-        run: |
-          git config --global user.name 'DJ Petersen'
-          git config --global user.email 'thedjpetersen@gmail.com'
-          git add README.md
-          git commit -m "Update README with badges"
-          git push
