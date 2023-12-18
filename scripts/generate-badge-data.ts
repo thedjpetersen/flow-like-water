@@ -49,6 +49,15 @@ function getCurrentReleaseVersion() {
   }
 }
 
+function getBuildStatus() {
+  try {
+    execSync("npm run build");
+    return "passing";
+  } catch {
+    return "failing";
+  }
+}
+
 // Check coverage
 if (fs.existsSync(coverageReport)) {
   const coverage = JSON.parse(fs.readFileSync(coverageReport, "utf8"));
@@ -65,6 +74,21 @@ if (fs.existsSync(coverageReport)) {
   console.error("Coverage report not found.");
   process.exit(1);
 }
+
+addBadge({
+  filename: "license.svg",
+  label: "License",
+  message: "ISC",
+  color: "blue",
+});
+
+const buildStatus = getBuildStatus();
+addBadge({
+  filename: "build.svg",
+  label: "Build",
+  message: buildStatus,
+  color: buildStatus === "passing" ? "green" : "red",
+});
 
 // Check NPM dependencies
 const dependenciesStatus = checkNpmDependencies();

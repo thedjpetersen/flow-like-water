@@ -4,8 +4,10 @@
 
 <!-- BADGES_START -->
 
+![Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/30dcbdf6a47c8094e3e637ee10e605662b11b1c4/build.svg)
 ![Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/3eb52c58d0105b50dc49839810605c45c4bdba04/coverage.svg)
 ![Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/4465959f17055aa9647f49c7f66c70e402243218/dependencies.svg)
+![Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/2aff73e846aadc599b276ed66891c048df025430/license.svg)
 ![Badge](https://gist.githubusercontent.com/thedjpetersen/dbf2e705dd2e2ebd6c79c71b841b06d4/raw/38153db15c47cfeaa29aef2df49b17aa9f41c395/release.svg)
 
 <!-- BADGES_END -->
