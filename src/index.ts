@@ -282,6 +282,22 @@ export class FlowControl extends EventEmitter {
     return this.taskGroups.get(taskGroupId);
   }
 
+  private executeTask = async (task: Task) => {
+    if (this.nextTaskId && task.id !== this.nextTaskId) {
+      task.state = "skipped";
+      return;
+    }
+
+    this.emit("taskStarted", task);
+    const nextTaskId = await task.run();
+    if (nextTaskId) {
+      this.nextTaskId = nextTaskId;
+    } else if (this.nextTaskId) {
+      delete this.nextTaskId;
+    }
+    this.emit("taskComplete", task);
+  };
+
   /**
    * Executes a task group and its child tasks recursively.
    * Emits a 'success' event upon completion of a task group.
@@ -294,19 +310,7 @@ export class FlowControl extends EventEmitter {
     const tasks = Array.from(taskGroup.children.values());
     for (const task of tasks) {
       if (task instanceof Task) {
-        if (this.nextTaskId && task.id !== this.nextTaskId) {
-          task.state = "skipped";
-          continue;
-        }
-
-        this.emit("taskStarted", task);
-        const nextTaskId = await task.run();
-        if (nextTaskId) {
-          this.nextTaskId = nextTaskId;
-        } else if (this.nextTaskId) {
-          delete this.nextTaskId;
-        }
-        this.emit("taskComplete", task);
+        await this.executeTask(task);
       } else {
         await this.runTaskGroup(task);
       }
@@ -332,8 +336,10 @@ export class FlowControl extends EventEmitter {
   runTask = async (taskId: TaskId) => {
     const taskGroups = Array.from(this.taskGroups.values());
     for (const taskGroup of taskGroups) {
-      const task = taskGroup.children.get(taskId);
-      await this.runTaskGroup(taskGroup);
+      const targetTask = taskGroup.children.get(taskId);
+      if (targetTask instanceof Task) {
+        await this.executeTask(targetTask);
+      }
     }
   };
 
