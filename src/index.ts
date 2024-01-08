@@ -326,6 +326,18 @@ export class FlowControl extends EventEmitter {
   };
 
   /**
+   * Executes a specific task group and its child tasks recursively.
+   * @param taskId
+   */
+  runTask = async (taskId: TaskId) => {
+    const taskGroups = Array.from(this.taskGroups.values());
+    for (const taskGroup of taskGroups) {
+      const task = taskGroup.children.get(taskId);
+      await this.runTaskGroup(taskGroup);
+    }
+  };
+
+  /**
    * Serializes the state of all task groups into a structured format.
    *
    * @returns {SerializedState} The serialized state of all task groups.
